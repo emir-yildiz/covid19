@@ -1,0 +1,42 @@
+# configuration specific to creating s3 connections
+connectionconf:
+    access_key: 'AWS_ACCESS_KEY_ID'
+    secret_key: 'AWS_SECRET_ACCESS_KEY'
+    region: 'eu-north-1'
+    bucket: 'dewp-test-bucket'
+    folder: 'output'
+    database: 'covid-19'
+    query:
+    {nytimes_data_in_usa_us_contries: 'SELECT * FROM "covid-19"."nytimes_data_in_usa_us_countryus_county"',
+    nytimes_data_in_usa_us_states: 'select * from "covid-19"."nytimes_data_in_usa_us_statesus_states"',
+    rearc_covid19_testing_data_us_daily: 'select * from "covid-19"."rearc-covid19-testing-data-us-dailyus_daily"',
+    rearc_covid19_testing_data_states_daily: 'select * from "covid-19"."rearc_covid19_testing_data_states_dailystates_daily"',
+    rearc_covid19_testing_data_us_total: 'select * from "covid-19"."rearc_covid19_testing_data_us_total_latestus_total_latest"',
+    rearc_usa_hostipal_beds: 'select * from "covid-19"."rearc_usa_hostipal_bedsrearc_usa_hospital_beds"',
+    static_dataset_country_code: 'select * from "covid-19"."static_dataset_country_codecountrycode"',
+    static_dataset_country_population: 'select * from "covid-19"."static_dataset_country_populationcountypopulation"',
+    enigma_jhud: 'select * from "covid-19"."enigma_jhud"'}
+
+etlconf:
+    fact_covid_1_columns: ['fips','province_state','country_region','confirmed','deaths','recovered','active']
+    fact_covid_2_columns: ['fips','positive','negative','hospitalizedcurrently','hospitalized','hospitalizeddischarged']
+    dim_region_1_columns: ['fips','province_state','country_region','lattitude','longtitude']
+    dim_region_2_columns: ['fips','county','state']
+    dim_hospital: ['fips','state','hos_lat','hos_lang','hq_address','hospital_type','hospital_name','hq_city','hq_state']
+    dim_date: ['fips','date']
+    
+
+# Logging configuration
+logging:
+  version: 1
+  formatters:
+    dewp:
+      format: "dewp Transformer - %(asctime)s - %(levelname)s - %(message)s"
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: dewp
+      level: DEBUG
+  root:
+    level: DEBUG
+    handlers: [ console ]
